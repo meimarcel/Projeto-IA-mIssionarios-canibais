@@ -67,6 +67,7 @@ class Jogo extends JPanel implements ActionListener {
     }
     
     public void paint(Graphics g) {
+        super.paint(g);
         Graphics2D grafico = (Graphics2D) g;
         grafico.drawImage(missionarios.get(0).getImage(), missionarios.get(0).getPosY(), missionarios.get(0).getPosX(), this);
         grafico.drawImage(missionarios.get(1).getImage(), missionarios.get(1).getPosY(), missionarios.get(1).getPosX(), this);
