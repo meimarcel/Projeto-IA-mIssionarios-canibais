@@ -9,7 +9,7 @@ public class Canibal {
     private Image canibalIMG;
    
     public Canibal(int posX,int posY){
-        ImageIcon ref = new ImageIcon("img\\quadrado.jpg");
+        ImageIcon ref = new ImageIcon("img\\canibal.png");
         canibalIMG = ref.getImage();
         this.posX=posX;
         this.posY=posY;

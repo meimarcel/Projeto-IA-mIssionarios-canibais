@@ -15,7 +15,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -38,15 +40,17 @@ public class TelaJogo extends JFrame {
     
 }
 class Jogo extends JPanel implements ActionListener {
-    private int i = 0;
-    private int posfinal = 100;
-    private int posinicial = 600;
+    private int i = 0,j=0;
+    private int posfinal = 20;
+    private int posinicial = 800;
+    private Canoa canoa;
     private Timer timer;
     private boolean fim_de_jogo = false;
     private boolean fim = true;
     private List<Estado> caminho;
     private ArrayList<Missionario> missionarios;
     private ArrayList<Canibal> canibais;
+    private Image fundoIMG;
     
     
     public Jogo(List<Estado> caminho) {
@@ -55,48 +59,76 @@ class Jogo extends JPanel implements ActionListener {
         this.caminho = caminho;
         this.missionarios = new ArrayList<>();
         this.canibais = new ArrayList<>();
+        this.canoa = new Canoa(700,posinicial-300);
         this.missionarios.add(new Missionario(400,posinicial));
-        this.missionarios.add(new Missionario(400,posinicial+100));
-        this.missionarios.add(new Missionario(400,posinicial+200));
-        this.canibais.add(new Canibal(300,posinicial));
-        this.canibais.add(new Canibal(300,posinicial+100));
-        this.canibais.add(new Canibal(300,posinicial+200));
-        timer = new Timer(1000, this);
+        this.missionarios.add(new Missionario(400,posinicial+40));
+        this.missionarios.add(new Missionario(400,posinicial+80));
+        this.canibais.add(new Canibal(500,posinicial));
+        this.canibais.add(new Canibal(500,posinicial+40));
+        this.canibais.add(new Canibal(500,posinicial+80));
+        ImageIcon ref = new ImageIcon("img\\fundo.jpg");
+        fundoIMG = ref.getImage();
+        timer = new Timer(100, this);
         timer.start();
-
+        
     }
     
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D grafico = (Graphics2D) g;
+        grafico.drawImage(fundoIMG, 0, 0, 1000, 840, this);
+        grafico.drawImage(canoa.getImage(), canoa.getPosY(), canoa.getPosX(), this);
         grafico.drawImage(missionarios.get(0).getImage(), missionarios.get(0).getPosY(), missionarios.get(0).getPosX(), this);
         grafico.drawImage(missionarios.get(1).getImage(), missionarios.get(1).getPosY(), missionarios.get(1).getPosX(), this);
         grafico.drawImage(missionarios.get(2).getImage(), missionarios.get(2).getPosY(), missionarios.get(2).getPosX(), this);
         grafico.drawImage(canibais.get(0).getImage(), canibais.get(0).getPosY(), canibais.get(0).getPosX(), this);
         grafico.drawImage(canibais.get(1).getImage(), canibais.get(1).getPosY(), canibais.get(1).getPosX(), this);
         grafico.drawImage(canibais.get(2).getImage(), canibais.get(2).getPosY(), canibais.get(2).getPosX(), this);
+        
         g.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        if(i<caminho.size()) {
-            Estado estado = caminho.get(i);
-            for (int l = 0; l < caminho.size(); ++l) {
-                if(estado.missionario>l){
-                    missionarios.get(l).setPosY(l*100+posfinal);
-                }else if(l<=2){
-                    missionarios.get(l).setPosY(l*100+posinicial);
+        Estado estado = caminho.get(i);
+        if(j<15){
+            if(estado.canoa){
+                this.canoa.setPosY(this.canoa.getPosY()-19); 
+//                for (int k = 0; k < 3; k++) {
+//                    if(i==0){
+//                        missionarios.get(k).setPosY(this.canoa.getPosY());
+//                        canibais.get(k).setPosY(this.canoa.getPosY());
+//                    }
+//                }
+            }
+            else{
+                this.canoa.setPosY(this.canoa.getPosY()+18);    
+            }
+            j++;
+        }else{
+            if(i<caminho.size()) {
+                for (int l = 0; l < 3; ++l) {
+                    if(estado.missionario>l){
+                        missionarios.get(l).setPosY(l*40+posfinal);
+                    }else if(l<=2){
+                        missionarios.get(l).setPosY(l*40+posinicial);
+                    }
+                    if(estado.canibal>l){
+                        canibais.get(l).setPosY(l*40+posfinal);
+                    }else if(l<=2){
+                        canibais.get(l).setPosY(l*40+posinicial);
+                    }
                 }
-                if(estado.canibal>l){
-                    canibais.get(l).setPosY(l*100+posfinal);
-                }else if(l<=2){
-                    canibais.get(l).setPosY(l*100+posinicial);
+                if(i+1==caminho.size()){
+                    
+                    i=i;
+                }else{
+                    i++;
                 }
             }
-        i++;
+            j=0;
         }
         repaint();
     }
+
 }
