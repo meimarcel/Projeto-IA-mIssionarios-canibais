@@ -9,7 +9,7 @@ public class Missionario {
     private Image missionarioIMG;
    
     public Missionario(int posX,int posY){
-        ImageIcon ref = new ImageIcon("img\\missionario.png");
+        ImageIcon ref = new ImageIcon("src//img//missionario.png");
         missionarioIMG = ref.getImage();
         this.posX=posX;
         this.posY=posY;

@@ -51,6 +51,7 @@ class Jogo extends JPanel implements ActionListener {
     private ArrayList<Missionario> missionarios;
     private ArrayList<Canibal> canibais;
     private Image fundoIMG;
+    private Estado anterior = new Estado(0,0,false);
     
     
     public Jogo(List<Estado> caminho) {
@@ -59,14 +60,14 @@ class Jogo extends JPanel implements ActionListener {
         this.caminho = caminho;
         this.missionarios = new ArrayList<>();
         this.canibais = new ArrayList<>();
-        this.canoa = new Canoa(700,posinicial-300);
-        this.missionarios.add(new Missionario(400,posinicial));
-        this.missionarios.add(new Missionario(400,posinicial+40));
-        this.missionarios.add(new Missionario(400,posinicial+80));
+        this.canoa = new Canoa(600,posinicial-300);
+        this.missionarios.add(new Missionario(450,posinicial));
+        this.missionarios.add(new Missionario(450,posinicial+40));
+        this.missionarios.add(new Missionario(450,posinicial+80));
         this.canibais.add(new Canibal(500,posinicial));
         this.canibais.add(new Canibal(500,posinicial+40));
         this.canibais.add(new Canibal(500,posinicial+80));
-        ImageIcon ref = new ImageIcon("img\\fundo.jpg");
+        ImageIcon ref = new ImageIcon("src//img//fundo.jpg");
         fundoIMG = ref.getImage();
         timer = new Timer(100, this);
         timer.start();
@@ -90,19 +91,26 @@ class Jogo extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         Estado estado = caminho.get(i);
-        if(j<15){
+        if(j<25){
             if(estado.canoa){
-                this.canoa.setPosY(this.canoa.getPosY()-19); 
-//                for (int k = 0; k < 3; k++) {
-//                    if(i==0){
-//                        missionarios.get(k).setPosY(this.canoa.getPosY());
-//                        canibais.get(k).setPosY(this.canoa.getPosY());
-//                    }
-//                }
+                this.canoa.setPosY(this.canoa.getPosY()-10); 
+                for (int k = anterior.missionario; k < estado.missionario; k++) {
+                    missionarios.get(k).setPosY(this.canoa.getPosY()+(50*k));
+                }
+                for (int k = anterior.canibal; k < estado.canibal; k++) {
+                    canibais.get(k).setPosY(this.canoa.getPosY()+(50*k));
+                }
             }
             else{
-                this.canoa.setPosY(this.canoa.getPosY()+18);    
+                this.canoa.setPosY(this.canoa.getPosY()+10);
+                for (int k = estado.missionario; k < anterior.missionario; k++) {
+                    missionarios.get(k).setPosY(this.canoa.getPosY()+(50*k));
+                }
+                for (int k = estado.canibal; k < anterior.canibal; k++) {
+                    canibais.get(k).setPosY(this.canoa.getPosY()+(50*k));
+                }
             }
             j++;
         }else{
@@ -119,14 +127,17 @@ class Jogo extends JPanel implements ActionListener {
                         canibais.get(l).setPosY(l*40+posinicial);
                     }
                 }
+                anterior = caminho.get(i);
                 if(i+1==caminho.size()){
                     
                     i=i;
+                    j= 20;
+                    timer.stop();
                 }else{
                     i++;
                 }
             }
-            j=0;
+         j=0;   
         }
         repaint();
     }

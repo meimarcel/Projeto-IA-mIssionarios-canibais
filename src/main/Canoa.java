@@ -3,12 +3,13 @@ package main;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+
 public class Canoa {
     private int posX;
     private int posY;
     private Image canoaIMG;
     public Canoa(int posX,int posY){
-        ImageIcon ref = new ImageIcon("img\\canoa.png");
+        ImageIcon ref = new ImageIcon("src//img//canoa.png");
         canoaIMG = ref.getImage();
         this.posX=posX;
         this.posY=posY;
