@@ -3,14 +3,13 @@ package main;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Missionario {
+public class Canoa {
     private int posX;
     private int posY;
-    private Image missionarioIMG;
-   
-    public Missionario(int posX,int posY){
-        ImageIcon ref = new ImageIcon("img\\missionario.png");
-        missionarioIMG = ref.getImage();
+    private Image canoaIMG;
+    public Canoa(int posX,int posY){
+        ImageIcon ref = new ImageIcon("img\\canoa.png");
+        canoaIMG = ref.getImage();
         this.posX=posX;
         this.posY=posY;
     }
@@ -27,6 +26,6 @@ public class Missionario {
         this.posY=y;
     }
     public Image getImage() {
-    	return missionarioIMG;
+    	return canoaIMG;
     }
 }
